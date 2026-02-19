@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>BSA Dializer - Iman Waluyo</title>
+<title>HD Clinical Decision Support - Iman Waluyo</title>
 
 <style>
 body{
@@ -50,7 +50,7 @@ background:#f0f4ff;
 
 .card{
 display:none;
-max-width:850px;
+max-width:900px;
 margin:30px auto;
 background:white;
 padding:30px;
@@ -99,23 +99,26 @@ line-height:1.6;
 }
 
 h2{margin-top:0;color:#0d47a1;}
+h3{margin-bottom:5px;color:#0d47a1;}
+hr{margin:15px 0;}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-<h1>BSA Dializer</h1>
+<h1>HD Clinical Decision Support System</h1>
+<p>Dialyzer Selection • Adequacy • Fluid Assessment</p>
 <p>Created by Iman Waluyo</p>
 </div>
 
 <div class="navbar">
-<button class="active" onclick="showTab('dializer',this)">Kalkulator Dialyzer</button>
-<button onclick="showTab('ktv',this)">Hitung Kt/V</button>
-<button onclick="showTab('teori',this)">Teori & Literatur</button>
+<button class="active" onclick="showTab('dializer',this)">Dialyzer</button>
+<button onclick="showTab('ktv',this)">Adekuasi & Program</button>
+<button onclick="showTab('teori',this)">Teori</button>
 </div>
 
-<!-- ===================== DIALYZER ===================== -->
+<!-- ================= DIALYZER ================= -->
 <div id="dializer" class="card active">
 
 <h2>Kalkulator BSA & Rekomendasi Dialyzer</h2>
@@ -123,8 +126,7 @@ h2{margin-top:0;color:#0d47a1;}
 <label>Kategori Pasien</label>
 <select id="kategori">
 <option value="anak">Anak (Pediatrik)</option>
-<option value="dewasa_pria">Dewasa Laki-laki</option>
-<option value="dewasa_wanita">Dewasa Perempuan</option>
+<option value="dewasa">Dewasa</option>
 </select>
 
 <label>Berat Badan (kg)</label>
@@ -140,15 +142,14 @@ h2{margin-top:0;color:#0d47a1;}
 </div>
 
 <div id="hasilBSA" class="result" style="display:none;"></div>
-
 </div>
 
-<!-- ===================== KTV ===================== -->
+<!-- ================= ADEKUASI ================= -->
 <div id="ktv" class="card">
 
-<h2>Perhitungan Adekuasi Dialisis</h2>
+<h2>Adekuasi & Program Dialisis</h2>
 
-<label>Berat Badan (kg)</label>
+<label>Berat Badan saat HD (kg)</label>
 <input type="number" id="bb2">
 
 <label>BUN Pre (mg/dL)</label>
@@ -160,8 +161,32 @@ h2{margin-top:0;color:#0d47a1;}
 <label>Durasi Dialisis (jam)</label>
 <input type="number" id="durasi">
 
-<label>Ultrafiltrasi / UF (Liter)</label>
+<label>Ultrafiltrasi Aktual (Liter)</label>
 <input type="number" id="uf">
+
+<hr>
+
+<h3>Pengkajian Klinis</h3>
+
+<label>Berat Badan Kering (kg)</label>
+<input type="number" id="bbkering">
+
+<label>BB Sekarang / Pre-HD (kg)</label>
+<input type="number" id="bbsekarang">
+
+<label>Kondisi Edema</label>
+<select id="edema">
+<option value="tidak">Tidak Ada</option>
+<option value="ringan">Ringan</option>
+<option value="sedang">Sedang</option>
+<option value="berat">Berat</option>
+</select>
+
+<label>Keluhan Sesak</label>
+<select id="sesak">
+<option value="tidak">Tidak</option>
+<option value="ya">Ya</option>
+</select>
 
 <div class="actions">
 <button class="btn-calc" onclick="hitungKTV()">Hitung</button>
@@ -170,47 +195,17 @@ h2{margin-top:0;color:#0d47a1;}
 </div>
 
 <div id="hasilKTV" class="result" style="display:none;"></div>
-
 </div>
 
-<!-- ===================== TEORI ===================== -->
+<!-- ================= TEORI ================= -->
 <div id="teori" class="card">
-
-<h2>Teori & Literatur Hemodialisis</h2>
-
-<b>Rumus BSA (Mosteller, 1987)</b><br>
-BSA = √((TB × BB) / 3600)
-
-<br><br>
-<b>URR</b><br>
-URR = ((Pre − Post) / Pre) × 100
-
-<br><br>
-<b>spKt/V (Daugirdas II)</b><br>
-spKt/V = −ln (R − 0.008t) + (4 − 3.5R)(UF/BB)
-
-<br><br>
-<b>Target Adekuasi</b><br>
-KDOQI 2015: spKt/V ≥ 1.2 (minimum), target optimal ≥ 1.4  
-URR ≥ 65%
-
-<br><br>
-<b>Literatur Klasik:</b>
-<ul>
-<li>Mosteller RD. N Engl J Med. 1987.</li>
-<li>Daugirdas JT. JASN 1993.</li>
-<li>KDOQI Hemodialysis Adequacy 2015 Update.</li>
-</ul>
-
-<b>Literatur 5 Tahun Terakhir:</b>
-<ul>
-<li>KDIGO 2023 Clinical Practice Guideline for CKD.</li>
-<li>Daugirdas Handbook of Dialysis, 6th Edition, 2023.</li>
-<li>KDOQI US Commentary Updates 2020–2022.</li>
-<li>ERA-EDTA Dialysis Updates 2020–2023.</li>
-<li>High-Flux & Membrane Technology Review, CJASN 2021–2023.</li>
-</ul>
-
+<h2>Referensi Ilmiah</h2>
+Mosteller 1987 – Rumus BSA<br>
+Daugirdas II Formula – JASN 1993<br>
+KDOQI Hemodialysis Adequacy 2015 Update<br>
+KDIGO CKD Guideline 2023<br>
+Daugirdas Handbook of Dialysis 6th Ed 2023<br>
+Flythe et al. UF Rate & Mortality CJASN 2021–2023
 </div>
 
 <script>
@@ -222,17 +217,13 @@ document.getElementById(id).classList.add("active");
 btn.classList.add("active");
 }
 
-/* ===================== DIALYZER ===================== */
+/* ================= DIALYZER ================= */
 
-function pilihNipro(area){
-if (area <= 0.55) return {nama:"FB-50", luas:0.5};
-else if (area <= 0.75) return {nama:"FB-70", luas:0.7};
-else if (area <= 0.95) return {nama:"FB-90", luas:0.9};
-else if (area <= 1.15) return {nama:"FB-110", luas:1.1};
-else if (area <= 1.35) return {nama:"FB-130", luas:1.3};
-else if (area <= 1.55) return {nama:"FB-150", luas:1.5};
-else if (area <= 1.75) return {nama:"FB-170", luas:1.7};
-else return {nama:"FB-190", luas:1.9};
+function pilihDializer(area){
+if (area <= 0.8) return {nama:"High Flux 70", luas:0.7};
+else if (area <= 1.05) return {nama:"High Flux 90", luas:0.9};
+else if (area <= 1.40) return {nama:"High Flux 130", luas:1.3};
+else return {nama:"High Flux 150", luas:1.5};
 }
 
 function hitungBSA(){
@@ -240,32 +231,23 @@ let bb=parseFloat(document.getElementById("bb").value);
 let tb=parseFloat(document.getElementById("tb").value);
 let kategori=document.getElementById("kategori").value;
 
-if(!bb||!tb){alert("Lengkapi data.");return;}
+if(!bb||!tb||bb<=0||tb<=0){alert("Data tidak valid");return;}
 
 let bsa=Math.sqrt((tb*bb)/3600);
-
 let min,max;
 
-if(kategori==="anak"){
-min=bsa*0.8; max=bsa*1.0;
-}else{
-min=bsa*1.0; max=bsa*1.2;
-}
+if(kategori==="anak"){min=bsa*0.8; max=bsa*1.0;}
+else{min=bsa*1.0; max=bsa*1.2;}
 
 let target=(min+max)/2;
-let dial=pilihNipro(target);
+let dial=pilihDializer(target);
 let rasio=(dial.luas/bsa)*100;
 
 document.getElementById("hasilBSA").style.display="block";
 document.getElementById("hasilBSA").innerHTML=
-`
-<b>BSA:</b> ${bsa.toFixed(2)} m²<br>
-<b>Dialyzer NIPRO:</b> ${dial.nama}<br>
-<b>Luas:</b> ${dial.luas} m²<br>
-<b>Rasio terhadap BSA:</b> ${rasio.toFixed(1)}%
-<hr>
-Dasar: Handbook of Dialysis 2023; KDIGO 2023; KDOQI Update; NIPRO Data.
-`;
+`<b>BSA:</b> ${bsa.toFixed(2)} m²<br>
+<b>Rekomendasi:</b> ${dial.nama}<br>
+<b>Rasio ke BSA:</b> ${rasio.toFixed(1)}%`;
 }
 
 function clearBSA(){
@@ -274,28 +256,38 @@ document.getElementById("tb").value="";
 document.getElementById("hasilBSA").style.display="none";
 }
 
-/* ===================== KTV ===================== */
+/* ================= ADEKUASI ================= */
 
 function hitungKTV(){
+
 let bb=parseFloat(document.getElementById("bb2").value);
 let pre=parseFloat(document.getElementById("bunpre").value);
 let post=parseFloat(document.getElementById("bunpost").value);
 let t=parseFloat(document.getElementById("durasi").value);
 let uf=parseFloat(document.getElementById("uf").value);
 
-if(!bb||!pre||!post||!t||!uf){alert("Lengkapi data.");return;}
+let bbkering=parseFloat(document.getElementById("bbkering").value);
+let bbsekarang=parseFloat(document.getElementById("bbsekarang").value);
+let edema=document.getElementById("edema").value;
+let sesak=document.getElementById("sesak").value;
+
+if(!bb||!pre||!post||!t||!uf||!bbkering||!bbsekarang){alert("Lengkapi data");return;}
+if(post>=pre){alert("BUN Post tidak boleh ≥ BUN Pre");return;}
 
 let urr=((pre-post)/pre)*100;
 let R=post/pre;
-let ktv= -Math.log(R - (0.008*t)) + ((4 - (3.5*R))*(uf/bb));
+let ktv=-Math.log(R-(0.008*t))+((4-(3.5*R))*(uf/bb));
+
+let idwg=bbsekarang-bbkering;
+let ufRate=(uf*1000)/(bbkering*t);
 
 document.getElementById("hasilKTV").style.display="block";
 document.getElementById("hasilKTV").innerHTML=
-`
-<b>URR:</b> ${urr.toFixed(1)}%<br>
+`<b>URR:</b> ${urr.toFixed(1)}%<br>
 <b>spKt/V:</b> ${ktv.toFixed(2)}<br>
-Target KDOQI ≥1.2
-`;
+<hr>
+<b>IDWG:</b> ${idwg.toFixed(2)} kg<br>
+<b>UF Rate:</b> ${ufRate.toFixed(1)} mL/kg/jam`;
 }
 
 function clearKTV(){
@@ -306,4 +298,4 @@ document.getElementById("hasilKTV").style.display="none";
 </script>
 
 </body>
-</html>
+  </html>
