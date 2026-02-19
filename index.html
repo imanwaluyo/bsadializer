@@ -1,1 +1,305 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BSA Dializer - Iman Waluyo</title>
+
+<style>
+body{
+font-family:'Segoe UI',Arial;
+margin:0;
+background:#f4f6f9;
+}
+
+/* HEADER */
+.header{
+background:#0d47a1;
+color:white;
+padding:18px;
+text-align:center;
+}
+.header h1{margin:0;font-weight:600;}
+.header p{margin:3px 0;font-size:13px;opacity:0.9;}
+
+/* NAVIGATION */
+.navbar{
+display:flex;
+justify-content:center;
+background:white;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.navbar button{
+background:none;
+border:none;
+padding:14px 22px;
+cursor:pointer;
+font-size:14px;
+font-weight:500;
+color:#555;
+transition:0.3s;
+}
+
+.navbar button.active{
+color:#0d47a1;
+border-bottom:3px solid #0d47a1;
+}
+
+.navbar button:hover{
+background:#f0f4ff;
+}
+
+/* CARD */
+.card{
+display:none;
+max-width:800px;
+margin:30px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.card.active{display:block;}
+
+input{
+width:100%;
+padding:8px;
+margin:6px 0 14px 0;
+border-radius:6px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+.actions{
+display:flex;
+justify-content:flex-end;
+gap:8px;
+margin-top:10px;
+}
+
+.actions button{
+padding:6px 14px;
+font-size:12px;
+border-radius:6px;
+border:none;
+cursor:pointer;
+}
+
+.btn-calc{background:#0d47a1;color:white;}
+.btn-clear{background:#9e9e9e;color:white;}
+.btn-print{background:#424242;color:white;}
+
+.result{
+margin-top:18px;
+padding:15px;
+background:#eef3ff;
+border-left:4px solid #0d47a1;
+border-radius:6px;
+font-size:14px;
+line-height:1.6;
+}
+
+h2{
+margin-top:0;
+font-weight:600;
+color:#0d47a1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>BSA Dializer</h1>
+<p>Created by Iman Waluyo</p>
+</div>
+
+<div class="navbar">
+<button class="active" onclick="showTab('dializer',this)">Kalkulator Dialyzer</button>
+<button onclick="showTab('ktv',this)">Hitung Kt/V</button>
+<button onclick="showTab('teori',this)">Teori & Literatur</button>
+</div>
+
+<!-- ================= DIALYZER ================= -->
+<div id="dializer" class="card active">
+
+<h2>Kalkulator BSA & Rekomendasi Dialyzer (Pediatrik)</h2>
+
+<label>Berat Badan (kg)</label>
+<input type="number" id="bb">
+
+<label>Tinggi Badan (cm)</label>
+<input type="number" id="tb">
+
+<div class="actions">
+<button class="btn-calc" onclick="hitungBSA()">Hitung</button>
+<button class="btn-clear" onclick="clearBSA()">Clear</button>
+<button class="btn-print" onclick="window.print()">Print</button>
+</div>
+
+<div id="hasilBSA" class="result" style="display:none;"></div>
+
+</div>
+
+<!-- ================= KTV ================= -->
+<div id="ktv" class="card">
+
+<h2>Perhitungan Adekuasi Dialisis</h2>
+
+<label>Berat Badan (kg)</label>
+<input type="number" id="bb2">
+
+<label>BUN Pre (mg/dL)</label>
+<input type="number" id="bunpre">
+
+<label>BUN Post (mg/dL)</label>
+<input type="number" id="bunpost">
+
+<label>Durasi Dialisis (jam)</label>
+<input type="number" id="durasi">
+
+<label>Ultrafiltrasi / UF (Liter)</label>
+<input type="number" id="uf">
+
+<div class="actions">
+<button class="btn-calc" onclick="hitungKTV()">Hitung</button>
+<button class="btn-clear" onclick="clearKTV()">Clear</button>
+<button class="btn-print" onclick="window.print()">Print</button>
+</div>
+
+<div id="hasilKTV" class="result" style="display:none;"></div>
+
+</div>
+
+<!-- ================= TEORI ================= -->
+<div id="teori" class="card">
+
+<h2>Teori & Literatur Hemodialisis</h2>
+
+<b>1. Rumus BSA (Mosteller, 1987)</b><br>
+BSA = √((Tinggi(cm) × Berat(kg)) / 3600)
+
+<br><br>
+<b>2. URR</b><br>
+URR = ((BUN pre − BUN post) / BUN pre) × 100<br>
+Target ≥ 65%
+
+<br><br>
+<b>3. spKt/V (Daugirdas II)</b><br>
+spKt/V = −ln (R − 0.008t) + (4 − 3.5R)(UF/BB)
+
+<br><br>
+<b>4. Target KDOQI</b><br>
+Minimum spKt/V ≥ 1.2<br>
+Target klinis optimal ≥ 1.4
+
+<br><br>
+<b>Literatur:</b>
+<ul>
+<li>Mosteller RD. N Engl J Med. 1987.</li>
+<li>Daugirdas JT. JASN 1993.</li>
+<li>KDOQI Hemodialysis Adequacy 2015 Update.</li>
+<li>KDOQI US Commentary 2020–2022.</li>
+<li>KDIGO CKD Guideline 2023.</li>
+<li>Daugirdas Handbook of Dialysis 6th Ed. 2023.</li>
+<li>NIPRO Technical Data Sheet – FB Series.</li>
+</ul>
+
+</div>
+
+<script>
+
+/* TAB SWITCH */
+function showTab(id,btn){
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("active"));
+document.querySelectorAll(".navbar button").forEach(b=>b.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+btn.classList.add("active");
+}
+
+/* ================= DIALYZER ================= */
+
+function pilihNipro(bsa){
+if (bsa <= 0.55) return {nama:"NIPRO FB-50", luas:0.5};
+else if (bsa <= 0.75) return {nama:"NIPRO FB-70", luas:0.7};
+else if (bsa <= 0.95) return {nama:"NIPRO FB-90", luas:0.9};
+else if (bsa <= 1.15) return {nama:"NIPRO FB-110", luas:1.1};
+else if (bsa <= 1.35) return {nama:"NIPRO FB-130", luas:1.3};
+else return {nama:"NIPRO FB-150", luas:1.5};
+}
+
+function hitungBSA(){
+let bb=parseFloat(document.getElementById("bb").value);
+let tb=parseFloat(document.getElementById("tb").value);
+if(!bb||!tb){alert("Lengkapi data.");return;}
+
+let bsa=Math.sqrt((tb*bb)/3600);
+let dialyzer=pilihNipro(bsa);
+let rasio=(dialyzer.luas/bsa)*100;
+
+let ket="";
+if(rasio<80) ket="Under-sizing";
+else if(rasio<=100) ket="Sesuai rekomendasi pediatrik (80–100%)";
+else ket="Over-sizing";
+
+document.getElementById("hasilBSA").style.display="block";
+document.getElementById("hasilBSA").innerHTML=
+`
+<b>BSA:</b> ${bsa.toFixed(2)} m²<br>
+<b>Dialyzer:</b> ${dialyzer.nama}<br>
+<b>Luas Membran:</b> ${dialyzer.luas} m²<br>
+<b>Rasio terhadap BSA:</b> ${rasio.toFixed(1)}%<br>
+<b>Interpretasi:</b> ${ket}
+<hr>
+Dasar: Handbook of Dialysis 2023; KDOQI 2015; NIPRO FB Series Data.
+`;
+}
+
+function clearBSA(){
+document.getElementById("bb").value="";
+document.getElementById("tb").value="";
+document.getElementById("hasilBSA").style.display="none";
+}
+
+/* ================= KTV ================= */
+
+function hitungKTV(){
+let bb=parseFloat(document.getElementById("bb2").value);
+let pre=parseFloat(document.getElementById("bunpre").value);
+let post=parseFloat(document.getElementById("bunpost").value);
+let t=parseFloat(document.getElementById("durasi").value);
+let uf=parseFloat(document.getElementById("uf").value);
+
+if(!bb||!pre||!post||!t||!uf){alert("Lengkapi data.");return;}
+
+let urr=((pre-post)/pre)*100;
+let R=post/pre;
+let ktv= -Math.log(R - (0.008*t)) + ((4 - (3.5*R))*(uf/bb));
+
+let interpretasi="";
+if(ktv>=1.4) interpretasi="Adekuasi Optimal";
+else if(ktv>=1.2) interpretasi="Adekuasi Minimal";
+else interpretasi="Tidak Adekuat";
+
+document.getElementById("hasilKTV").style.display="block";
+document.getElementById("hasilKTV").innerHTML=
+`
+<b>URR:</b> ${urr.toFixed(1)} %<br>
+<b>spKt/V:</b> ${ktv.toFixed(2)}<br>
+<b>Interpretasi:</b> ${interpretasi}
+<hr>
+Target: KDOQI 2015 (spKt/V ≥1.2; optimal ≥1.4; URR ≥65%)
+`;
+}
+
+function clearKTV(){
+document.querySelectorAll("#ktv input").forEach(i=>i.value="");
+document.getElementById("hasilKTV").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
