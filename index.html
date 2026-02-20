@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>HD Clinical Decision Support - Iman Waluyo</title>
+<title>HD Clinical Decision Support PRO - Iman Waluyo</title>
 
 <style>
 body{
@@ -26,6 +26,7 @@ display:flex;
 justify-content:center;
 background:white;
 box-shadow:0 2px 8px rgba(0,0,0,0.08);
+flex-wrap:wrap;
 }
 
 .navbar button{
@@ -50,7 +51,7 @@ background:#f0f4ff;
 
 .card{
 display:none;
-max-width:900px;
+max-width:950px;
 margin:30px auto;
 background:white;
 padding:30px;
@@ -73,12 +74,12 @@ font-size:14px;
 display:flex;
 justify-content:flex-end;
 gap:8px;
-margin-top:10px;
+flex-wrap:wrap;
 }
 
 .actions button{
-padding:6px 14px;
-font-size:12px;
+padding:8px 14px;
+font-size:13px;
 border-radius:6px;
 border:none;
 cursor:pointer;
@@ -107,15 +108,16 @@ hr{margin:15px 0;}
 <body>
 
 <div class="header">
-<h1>HD Clinical Decision Support System</h1>
-<p>Dialyzer Selection • Adequacy • Fluid Assessment</p>
+<h1>HD Clinical Decision Support PRO</h1>
+<p>Dialyzer • Adequacy • AI Dry Weight • Prescription • Dashboard</p>
 <p>Created by Iman Waluyo</p>
 </div>
 
 <div class="navbar">
 <button class="active" onclick="showTab('dializer',this)">Dialyzer</button>
 <button onclick="showTab('ktv',this)">Adekuasi & Program</button>
-<button onclick="showTab('teori',this)">Teori</button>
+<button onclick="showTab('dashboard',this)">Dashboard Mutu</button>
+<button onclick="showTab('teori',this)">Referensi</button>
 </div>
 
 <!-- ================= DIALYZER ================= -->
@@ -123,9 +125,9 @@ hr{margin:15px 0;}
 
 <h2>Kalkulator BSA & Rekomendasi Dialyzer</h2>
 
-<label>Kategori Pasien</label>
+<label>Kategori</label>
 <select id="kategori">
-<option value="anak">Anak (Pediatrik)</option>
+<option value="anak">Anak</option>
 <option value="dewasa">Dewasa</option>
 </select>
 
@@ -138,7 +140,6 @@ hr{margin:15px 0;}
 <div class="actions">
 <button class="btn-calc" onclick="hitungBSA()">Hitung</button>
 <button class="btn-clear" onclick="clearBSA()">Clear</button>
-<button class="btn-print" onclick="window.print()">Print</button>
 </div>
 
 <div id="hasilBSA" class="result" style="display:none;"></div>
@@ -149,40 +150,40 @@ hr{margin:15px 0;}
 
 <h2>Adekuasi & Program Dialisis</h2>
 
-<label>Berat Badan saat HD (kg)</label>
+<label>BB Post-HD (kg)</label>
 <input type="number" id="bb2">
 
-<label>BUN Pre (mg/dL)</label>
+<label>BUN Pre</label>
 <input type="number" id="bunpre">
 
-<label>BUN Post (mg/dL)</label>
+<label>BUN Post</label>
 <input type="number" id="bunpost">
 
-<label>Durasi Dialisis (jam)</label>
+<label>Durasi (jam)</label>
 <input type="number" id="durasi">
 
-<label>Ultrafiltrasi Aktual (Liter)</label>
+<label>UF (Liter)</label>
 <input type="number" id="uf">
 
 <hr>
 
 <h3>Pengkajian Klinis</h3>
 
-<label>Berat Badan Kering (kg)</label>
+<label>BB Kering</label>
 <input type="number" id="bbkering">
 
-<label>BB Sekarang / Pre-HD (kg)</label>
+<label>BB Pre-HD</label>
 <input type="number" id="bbsekarang">
 
-<label>Kondisi Edema</label>
+<label>Edema</label>
 <select id="edema">
-<option value="tidak">Tidak Ada</option>
+<option value="tidak">Tidak</option>
 <option value="ringan">Ringan</option>
 <option value="sedang">Sedang</option>
 <option value="berat">Berat</option>
 </select>
 
-<label>Keluhan Sesak</label>
+<label>Sesak</label>
 <select id="sesak">
 <option value="tidak">Tidak</option>
 <option value="ya">Ya</option>
@@ -190,88 +191,226 @@ hr{margin:15px 0;}
 
 <div class="actions">
 <button class="btn-calc" onclick="hitungKTV()">Hitung</button>
+<button class="btn-print" onclick="cetakResep()">Cetak Resep HD</button>
 <button class="btn-clear" onclick="clearKTV()">Clear</button>
-<button class="btn-print" onclick="window.print()">Print</button>
 </div>
 
 <div id="hasilKTV" class="result" style="display:none;"></div>
 </div>
 
-<!-- ================= TEORI ================= -->
-<div id="teori" class="card">
-<h2>Referensi Ilmiah</h2>
-Mosteller 1987 – Rumus BSA<br>
-Daugirdas II Formula – JASN 1993<br>
-KDOQI Hemodialysis Adequacy 2015 Update<br>
-KDIGO CKD Guideline 2023<br>
-Daugirdas Handbook of Dialysis 6th Ed 2023<br>
-Flythe et al. UF Rate & Mortality CJASN 2021–2023
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard" class="card">
+
+<h2>Dashboard Mutu Unit HD</h2>
+
+<label>Data spKt/V</label>
+<input type="text" id="dataKTV">
+
+<label>Data URR (%)</label>
+<input type="text" id="dataURR">
+
+<label>Data UF Rate</label>
+<input type="text" id="dataUF">
+
+<label>Data IDWG</label>
+<input type="text" id="dataIDWG">
+
+<div class="actions">
+<button class="btn-calc" onclick="hitungDashboard()">Analisis</button>
 </div>
 
-<script>
+<div id="hasilDashboard" class="result" style="display:none;"></div>
+</div>
 
-function showTab(id,btn){
-document.querySelectorAll(".card").forEach(c=>c.classList.remove("active"));
-document.querySelectorAll(".navbar button").forEach(b=>b.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-btn.classList.add("active");
+<!-- ================= REFERENSI ================= -->
+<div id="teori" class="card">
+<h2>Referensi Ilmiah</h2>
+Mosteller 1987 – BSA Formula<br>
+Daugirdas II Formula – JASN 1993<br>
+KDOQI 2015 Update<br>
+KDIGO 2023 CKD Guideline<br>
+Daugirdas Handbook 6th Ed 2023<br>
+Flythe CJASN 2021–2023 UF Rate & Mortality
+</div>margin:30px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
 }
 
-/* ================= DIALYZER ================= */
+.card.active{display:block;}
 
-function pilihDializer(area){
-if (area <= 0.8) return {nama:"High Flux 70", luas:0.7};
-else if (area <= 1.05) return {nama:"High Flux 90", luas:0.9};
-else if (area <= 1.40) return {nama:"High Flux 130", luas:1.3};
-else return {nama:"High Flux 150", luas:1.5};
+input, select{
+width:100%;
+padding:8px;
+margin:6px 0 14px 0;
+border-radius:6px;
+border:1px solid #ddd;
+font-size:14px;
 }
 
-function hitungBSA(){
-let bb=parseFloat(document.getElementById("bb").value);
-let tb=parseFloat(document.getElementById("tb").value);
-let kategori=document.getElementById("kategori").value;
-
-if(!bb||!tb||bb<=0||tb<=0){alert("Data tidak valid");return;}
-
-let bsa=Math.sqrt((tb*bb)/3600);
-let min,max;
-
-if(kategori==="anak"){min=bsa*0.8; max=bsa*1.0;}
-else{min=bsa*1.0; max=bsa*1.2;}
-
-let target=(min+max)/2;
-let dial=pilihDializer(target);
-let rasio=(dial.luas/bsa)*100;
-
-document.getElementById("hasilBSA").style.display="block";
-document.getElementById("hasilBSA").innerHTML=
-`<b>BSA:</b> ${bsa.toFixed(2)} m²<br>
-<b>Rekomendasi:</b> ${dial.nama}<br>
-<b>Rasio ke BSA:</b> ${rasio.toFixed(1)}%`;
+.actions{
+display:flex;
+justify-content:flex-end;
+gap:8px;
+flex-wrap:wrap;
 }
 
-function clearBSA(){
-document.getElementById("bb").value="";
-document.getElementById("tb").value="";
-document.getElementById("hasilBSA").style.display="none";
+.actions button{
+padding:8px 14px;
+font-size:13px;
+border-radius:6px;
+border:none;
+cursor:pointer;
 }
 
-/* ================= ADEKUASI ================= */
+.btn-calc{background:#0d47a1;color:white;}
+.btn-clear{background:#9e9e9e;color:white;}
+.btn-print{background:#424242;color:white;}
 
-function hitungKTV(){
+.result{
+margin-top:18px;
+padding:15px;
+background:#eef3ff;
+border-left:4px solid #0d47a1;
+border-radius:6px;
+font-size:14px;
+line-height:1.6;
+}
 
-let bb=parseFloat(document.getElementById("bb2").value);
-let pre=parseFloat(document.getElementById("bunpre").value);
-let post=parseFloat(document.getElementById("bunpost").value);
-let t=parseFloat(document.getElementById("durasi").value);
-let uf=parseFloat(document.getElementById("uf").value);
+h2{margin-top:0;color:#0d47a1;}
+h3{margin-bottom:5px;color:#0d47a1;}
+hr{margin:15px 0;}
+</style>
+</head>
 
-let bbkering=parseFloat(document.getElementById("bbkering").value);
-let bbsekarang=parseFloat(document.getElementById("bbsekarang").value);
-let edema=document.getElementById("edema").value;
-let sesak=document.getElementById("sesak").value;
+<body>
 
-if(!bb||!pre||!post||!t||!uf||!bbkering||!bbsekarang){alert("Lengkapi data");return;}
+<div class="header">
+<h1>HD Clinical Decision Support PRO</h1>
+<p>Dialyzer • Adequacy • AI Dry Weight • Prescription • Dashboard</p>
+<p>Created by Iman Waluyo</p>
+</div>
+
+<div class="navbar">
+<button class="active" onclick="showTab('dializer',this)">Dialyzer</button>
+<button onclick="showTab('ktv',this)">Adekuasi & Program</button>
+<button onclick="showTab('dashboard',this)">Dashboard Mutu</button>
+<button onclick="showTab('teori',this)">Referensi</button>
+</div>
+
+<!-- ================= DIALYZER ================= -->
+<div id="dializer" class="card active">
+
+<h2>Kalkulator BSA & Rekomendasi Dialyzer</h2>
+
+<label>Kategori</label>
+<select id="kategori">
+<option value="anak">Anak</option>
+<option value="dewasa">Dewasa</option>
+</select>
+
+<label>Berat Badan (kg)</label>
+<input type="number" id="bb">
+
+<label>Tinggi Badan (cm)</label>
+<input type="number" id="tb">
+
+<div class="actions">
+<button class="btn-calc" onclick="hitungBSA()">Hitung</button>
+<button class="btn-clear" onclick="clearBSA()">Clear</button>
+</div>
+
+<div id="hasilBSA" class="result" style="display:none;"></div>
+</div>
+
+<!-- ================= ADEKUASI ================= -->
+<div id="ktv" class="card">
+
+<h2>Adekuasi & Program Dialisis</h2>
+
+<label>BB Post-HD (kg)</label>
+<input type="number" id="bb2">
+
+<label>BUN Pre</label>
+<input type="number" id="bunpre">
+
+<label>BUN Post</label>
+<input type="number" id="bunpost">
+
+<label>Durasi (jam)</label>
+<input type="number" id="durasi">
+
+<label>UF (Liter)</label>
+<input type="number" id="uf">
+
+<hr>
+
+<h3>Pengkajian Klinis</h3>
+
+<label>BB Kering</label>
+<input type="number" id="bbkering">
+
+<label>BB Pre-HD</label>
+<input type="number" id="bbsekarang">
+
+<label>Edema</label>
+<select id="edema">
+<option value="tidak">Tidak</option>
+<option value="ringan">Ringan</option>
+<option value="sedang">Sedang</option>
+<option value="berat">Berat</option>
+</select>
+
+<label>Sesak</label>
+<select id="sesak">
+<option value="tidak">Tidak</option>
+<option value="ya">Ya</option>
+</select>
+
+<div class="actions">
+<button class="btn-calc" onclick="hitungKTV()">Hitung</button>
+<button class="btn-print" onclick="cetakResep()">Cetak Resep HD</button>
+<button class="btn-clear" onclick="clearKTV()">Clear</button>
+</div>
+
+<div id="hasilKTV" class="result" style="display:none;"></div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard" class="card">
+
+<h2>Dashboard Mutu Unit HD</h2>
+
+<label>Data spKt/V</label>
+<input type="text" id="dataKTV">
+
+<label>Data URR (%)</label>
+<input type="text" id="dataURR">
+
+<label>Data UF Rate</label>
+<input type="text" id="dataUF">
+
+<label>Data IDWG</label>
+<input type="text" id="dataIDWG">
+
+<div class="actions">
+<button class="btn-calc" onclick="hitungDashboard()">Analisis</button>
+</div>
+
+<div id="hasilDashboard" class="result" style="display:none;"></div>
+</div>
+
+<!-- ================= REFERENSI ================= -->
+<div id="teori" class="card">
+<h2>Referensi Ilmiah</h2>
+Mosteller 1987 – BSA Formula<br>
+Daugirdas II Formula – JASN 1993<br>
+KDOQI 2015 Update<br>
+KDIGO 2023 CKD Guideline<br>
+Daugirdas Handbook 6th Ed 2023<br>
+Flythe CJASN 2021–2023 UF Rate & Mortality
+</div>if(!bb||!pre||!post||!t||!uf||!bbkering||!bbsekarang){alert("Lengkapi data");return;}
 if(post>=pre){alert("BUN Post tidak boleh ≥ BUN Pre");return;}
 
 let urr=((pre-post)/pre)*100;
@@ -296,6 +435,281 @@ document.getElementById("hasilKTV").style.display="none";
 }
 
 </script>
+  <script>
+
+/* =====================================================
+   NAVIGASI TAB
+===================================================== */
+function showTab(id,btn){
+document.querySelectorAll(".card").forEach(c=>c.classList.remove("active"));
+document.querySelectorAll(".navbar button").forEach(b=>b.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+btn.classList.add("active");
+}
+
+/* =====================================================
+   DIALYZER SELECTION
+===================================================== */
+
+function pilihDializer(area){
+if (area <= 0.8) return {nama:"High Flux 70", luas:0.7};
+else if (area <= 1.05) return {nama:"High Flux 90", luas:0.9};
+else if (area <= 1.40) return {nama:"High Flux 130", luas:1.3};
+else return {nama:"High Flux 150", luas:1.5};
+}
+
+function hitungBSA(){
+
+let bb=parseFloat(document.getElementById("bb").value);
+let tb=parseFloat(document.getElementById("tb").value);
+let kategori=document.getElementById("kategori").value;
+
+if(!bb||!tb||bb<=0||tb<=0){
+alert("Data tidak valid"); return;
+}
+
+/* Rumus Mosteller */
+let bsa=Math.sqrt((tb*bb)/3600);
+
+let min,max;
+if(kategori==="anak"){
+min=bsa*0.8;
+max=bsa*1.0;
+}else{
+min=bsa*1.0;
+max=bsa*1.2;
+}
+
+let target=(min+max)/2;
+let dial=pilihDializer(target);
+let rasio=(dial.luas/bsa)*100;
+
+document.getElementById("hasilBSA").style.display="block";
+document.getElementById("hasilBSA").innerHTML=
+`
+<b>BSA:</b> ${bsa.toFixed(2)} m²<br>
+<b>Range Target Luas:</b> ${min.toFixed(2)} – ${max.toFixed(2)} m²<br>
+<b>Rekomendasi Dialyzer:</b> ${dial.nama}<br>
+<b>Rasio Dialyzer/BSA:</b> ${rasio.toFixed(1)}%<br>
+<i>Pediatrik: hindari oversizing >120%</i>
+`;
+}
+
+function clearBSA(){
+document.getElementById("bb").value="";
+document.getElementById("tb").value="";
+document.getElementById("hasilBSA").style.display="none";
+}
+
+/* =====================================================
+   ADEKUASI & AI PROGRAM
+===================================================== */
+
+function hitungKTV(){
+
+let bb=parseFloat(document.getElementById("bb2").value);
+let pre=parseFloat(document.getElementById("bunpre").value);
+let post=parseFloat(document.getElementById("bunpost").value);
+let t=parseFloat(document.getElementById("durasi").value);
+let uf=parseFloat(document.getElementById("uf").value);
+
+let bbkering=parseFloat(document.getElementById("bbkering").value);
+let bbsekarang=parseFloat(document.getElementById("bbsekarang").value);
+let edema=document.getElementById("edema").value;
+let sesak=document.getElementById("sesak").value;
+
+if(!bb||!pre||!post||!t||!uf||!bbkering||!bbsekarang){
+alert("Lengkapi data"); return;
+}
+if(post>=pre){
+alert("BUN Post tidak boleh ≥ BUN Pre");
+return;
+}
+
+/* Daugirdas II */
+let urr=((pre-post)/pre)*100;
+let R=post/pre;
+let ktv=-Math.log(R-(0.008*t))+((4-(3.5*R))*(uf/bb));
+
+let idwg=bbsekarang-bbkering;
+let ufRate=(uf*1000)/(bbkering*t);
+
+/* ================= INTERPRETASI ================= */
+
+let rekom="";
+
+if(ktv<1.2){
+rekom+=`⚠ Adekuasi kurang → Tambah durasi / naikkan Qb / naikkan dialyzer<br>`;
+}else{
+rekom+=`✓ Adekuasi tercapai<br>`;
+}
+
+if(ufRate>13){
+rekom+=`⚠ UF Rate >13 → Risiko mortalitas meningkat<br>`;
+}else if(ufRate>10){
+rekom+=`⚠ UF borderline → Ideal <10<br>`;
+}else{
+rekom+=`✓ UF Rate aman<br>`;
+}
+
+if(idwg>3 || edema!=="tidak" || sesak==="ya"){
+rekom+=`⚠ Overload cairan → evaluasi BB kering<br>`;
+}
+
+/* MODE PEDIATRIK */
+if(bb<40){
+let qbMin=5*bb;
+let qbMax=7*bb;
+rekom+=`<hr><b>Mode Pediatrik:</b><br>
+Target Kt/V bayi >2<br>
+Qb: ${qbMin.toFixed(0)} – ${qbMax.toFixed(0)} mL/menit<br>
+UF ≤0.2 mL/kg/menit`;
+}
+
+document.getElementById("hasilKTV").style.display="block";
+document.getElementById("hasilKTV").innerHTML=
+`
+<b>URR:</b> ${urr.toFixed(1)}%<br>
+<b>spKt/V:</b> ${ktv.toFixed(2)}<br>
+<b>IDWG:</b> ${idwg.toFixed(2)} kg<br>
+<b>UF Rate:</b> ${ufRate.toFixed(1)} mL/kg/jam<br>
+<hr>
+${rekom}
+`;
+}
+
+function clearKTV(){
+document.querySelectorAll("#ktv input").forEach(i=>i.value="");
+document.getElementById("hasilKTV").style.display="none";
+}
+
+/* =====================================================
+   AI DRY WEIGHT ESTIMATION
+===================================================== */
+
+function estimasiBBKering(bbkering,idwg,edema,sesak){
+
+let saran=bbkering;
+
+if(edema==="ringan") saran-=0.2;
+if(edema==="sedang") saran-=0.3;
+if(edema==="berat") saran-=0.5;
+if(sesak==="ya") saran-=0.3;
+if(idwg>3) saran-=0.2;
+
+return saran.toFixed(2);
+}
+
+/* =====================================================
+   CETAK RESEP HD
+===================================================== */
+
+function cetakResep(){
+
+let bb=parseFloat(document.getElementById("bb2").value);
+let durasi=parseFloat(document.getElementById("durasi").value);
+let uf=parseFloat(document.getElementById("uf").value);
+let bbkering=parseFloat(document.getElementById("bbkering").value);
+let bbsekarang=parseFloat(document.getElementById("bbsekarang").value);
+let edema=document.getElementById("edema").value;
+let sesak=document.getElementById("sesak").value;
+
+if(!bb||!durasi||!uf||!bbkering||!bbsekarang){
+alert("Lengkapi data dulu"); return;
+}
+
+let idwg=bbsekarang-bbkering;
+let ufRate=(uf*1000)/(bbkering*durasi);
+let bbBaru=estimasiBBKering(bbkering,idwg,edema,sesak);
+
+let qb = bb<40 ? (6*bb) : 300;
+let dialyzer = bb<40 ? "High Flux 70/90" : "High Flux 130/150";
+
+let isi=`
+<h2>RESEP HEMODIALISIS</h2>
+<hr>
+BB Pre-HD: ${bbsekarang} kg<br>
+BB Kering Lama: ${bbkering} kg<br>
+Estimasi BB Kering Baru: ${bbBaru} kg<br>
+IDWG: ${idwg.toFixed(2)} kg<br>
+<hr>
+Durasi: ${durasi} jam<br>
+UF: ${uf} L<br>
+UF Rate: ${ufRate.toFixed(1)} mL/kg/jam<br>
+Qb: ${qb.toFixed(0)} mL/menit<br>
+Dialyzer: ${dialyzer}<br>
+<hr>
+Generated by HD Clinical Decision Support PRO
+`;
+
+let win=window.open('');
+win.document.write(isi);
+win.print();
+}
+
+/* =====================================================
+   DASHBOARD MUTU
+===================================================== */
+
+function parseData(id){
+return document.getElementById(id).value
+.split(",")
+.map(x=>parseFloat(x.trim()))
+.filter(x=>!isNaN(x));
+}
+
+function persen(data,target,mode){
+let count=0;
+data.forEach(val=>{
+if(mode==="gte" && val>=target) count++;
+if(mode==="lt" && val<target) count++;
+});
+return ((count/data.length)*100).toFixed(1);
+}
+
+function rata(data){
+return (data.reduce((a,b)=>a+b,0)/data.length).toFixed(2);
+}
+
+function hitungDashboard(){
+
+let ktv=parseData("dataKTV");
+let urr=parseData("dataURR");
+let uf=parseData("dataUF");
+let idwg=parseData("dataIDWG");
+
+if(!ktv.length||!urr.length||!uf.length||!idwg.length){
+alert("Lengkapi semua data"); return;
+}
+
+let ktvGood=persen(ktv,1.2,"gte");
+let urrGood=persen(urr,65,"gte");
+let ufSafe=persen(uf,10,"lt");
+let ufHigh=persen(uf,13,"gte");
+let avgIDWG=rata(idwg);
+
+let mutu="";
+if(ktvGood>=80 && ufSafe>=80) mutu="Mutu Unit Baik";
+else if(ktvGood>=70) mutu="Mutu Cukup";
+else mutu="Perlu Perbaikan";
+
+document.getElementById("hasilDashboard").style.display="block";
+document.getElementById("hasilDashboard").innerHTML=
+`
+<b>spKt/V ≥1.2:</b> ${ktvGood}%<br>
+<b>URR ≥65%:</b> ${urrGood}%<br>
+<b>UF <10:</b> ${ufSafe}%<br>
+<b>UF >13:</b> ${ufHigh}%<br>
+<b>Rata IDWG:</b> ${avgIDWG} kg<br>
+<hr>
+<b>Status Mutu:</b> ${mutu}
+`;
+}
+
+</script>
+
+</body>
+  </html>
 
 </body>
   </html>
